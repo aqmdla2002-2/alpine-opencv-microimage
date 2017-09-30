@@ -41,23 +41,28 @@ RUN apk add --update --no-cache \
       # A C language family front-end for LLVM (development files)
       clang-dev \
 
-      linux-headers \
-
-      && pip install numpy
+      linux-headers && \
+      
+      # Remove cache apk
+      rm -rf /var/cache/apk/* && \ 
+      
+      # Install numpy
+      pip install numpy
 
 ENV CC /usr/bin/clang
 ENV CXX /usr/bin/clang++
+ENV OPENCV_VERSION 3.3.0
 
 RUN mkdir /opt && cd /opt && \
-  wget https://github.com/opencv/opencv/archive/3.3.0.zip && \
-  unzip 3.3.0.zip && \
-  cd /opt/opencv-3.3.0 && \
+  wget https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.zip && \
+  unzip ${OPENCV_VERSION}.zip && \
+  rm -rf ${OPENCV_VERSION}.zip && \
+  cd /opt/opencv-${OPENCV_VERSION} && \
   mkdir build && \
   cd build && \
   cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_FFMPEG=NO \
   -D WITH_IPP=NO -D WITH_OPENEXR=NO .. && \
   make VERBOSE=1 && \
   make && \
-  make install
-
-RUN rm -rf /var/cache/apk/*
+  make install && \
+  rm -rf /opt/opencv-${OPENCV_VERSION}
