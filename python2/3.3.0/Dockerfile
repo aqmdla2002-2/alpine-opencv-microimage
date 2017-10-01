@@ -1,5 +1,7 @@
 FROM python:2-alpine3.6
 
+MAINTAINER David Verdejo <david.verdejo@bluekiri.com>
+
 RUN echo -e '@edgunity http://nl.alpinelinux.org/alpine/edge/community\n\
 @edge http://nl.alpinelinux.org/alpine/edge/main\n\
 @testing http://nl.alpinelinux.org/alpine/edge/testing\n\
