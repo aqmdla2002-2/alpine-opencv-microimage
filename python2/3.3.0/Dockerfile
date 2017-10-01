@@ -6,10 +6,11 @@ RUN echo -e '@edgunity http://nl.alpinelinux.org/alpine/edge/community\n\
 @community http://dl-cdn.alpinelinux.org/alpine/edge/community'\
   >> /etc/apk/repositories
 
-RUN apk update && apk upgrade
+RUN apk update && \
+      apk upgrade && \
+      apk add --no-cache && \
 
-RUN apk add --update --no-cache \
-  # --virtual .build-deps \
+      # --virtual .build-deps \
       build-base \
       openblas-dev \
       unzip \
@@ -47,7 +48,7 @@ RUN apk add --update --no-cache \
       rm -rf /var/cache/apk/* && \ 
       
       # Install numpy
-      pip install numpy
+      pip install --use-wheel --no-cache-dir numpy
 
 ENV CC /usr/bin/clang
 ENV CXX /usr/bin/clang++
